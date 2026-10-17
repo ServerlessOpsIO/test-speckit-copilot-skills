@@ -10,4 +10,4 @@ spec:
   type: iac
   lifecycle: production
   owner: group:00gjdgxs1ur6lsu
-  system: system:backstage
+  system: system:speckittesting
