@@ -14,6 +14,7 @@
 
 - Q: Where should users request and receive the greeting? → A: Users trigger the state machine directly.
 - Q: What should make a greeting request invalid? → A: No additional input; only an unavailable or malformed trigger is invalid.
+- Q: After a temporary service failure, should the user retry, or should the system retry automatically? → A: The system retries automatically up to three times after the initial attempt, for four attempts total.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -34,7 +35,7 @@ As a user, I request a greeting and receive a clear "Hello, world!" message.
 
 - A greeting request requires no additional user input. If the state-machine trigger is unavailable or malformed, the user receives a clear, user-friendly error explaining the request cannot be processed.
 - How does the system handle repeated rapid requests? Each valid request still returns the same greeting without inconsistent output.
-- What happens when the greeting cannot be delivered due to a temporary service issue? The user receives an error message and can retry successfully once service is available.
+- If the greeting cannot be delivered due to a temporary service issue, the system automatically retries up to three times after the initial attempt. If all four attempts fail, the user receives a clear, user-friendly error message.
 
 ## Requirements *(mandatory)*
 
@@ -44,7 +45,7 @@ As a user, I request a greeting and receive a clear "Hello, world!" message.
 - **FR-002**: The system MUST return the exact message "Hello, world!" for every valid greeting request.
 - **FR-003**: Users MUST be able to request the greeting repeatedly and receive the same output each time.
 - **FR-004**: The system MUST return a clear, user-friendly error message when the state-machine trigger is unavailable or malformed.
-- **FR-005**: The system MUST return a clear, user-friendly error message when a valid request cannot be completed due to a temporary failure.
+- **FR-005**: The system MUST automatically retry a valid greeting request up to three times after the initial attempt when a temporary failure occurs, then return a clear, user-friendly error if all four attempts fail.
 - **FR-006**: The greeting feature MUST be available to all intended users without requiring additional setup beyond normal access to the product.
 
 ### Key Entities *(include if feature involves data)*
