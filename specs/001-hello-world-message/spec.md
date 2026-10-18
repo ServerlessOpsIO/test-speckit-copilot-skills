@@ -8,6 +8,13 @@
 
 **Input**: User description: "As a user I receive a hello world message"
 
+## Clarifications
+
+### Session 2026-10-18
+
+- Q: Where should users request and receive the greeting? → A: Users trigger the state machine directly.
+- Q: What should make a greeting request invalid? → A: No additional input; only an unavailable or malformed trigger is invalid.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Receive a greeting (Priority: P1)
@@ -25,7 +32,7 @@ As a user, I request a greeting and receive a clear "Hello, world!" message.
 
 ### Edge Cases
 
-- What happens when the greeting request is empty or malformed? The user receives a clear, user-friendly error explaining the request cannot be processed.
+- A greeting request requires no additional user input. If the state-machine trigger is unavailable or malformed, the user receives a clear, user-friendly error explaining the request cannot be processed.
 - How does the system handle repeated rapid requests? Each valid request still returns the same greeting without inconsistent output.
 - What happens when the greeting cannot be delivered due to a temporary service issue? The user receives an error message and can retry successfully once service is available.
 
@@ -33,10 +40,10 @@ As a user, I request a greeting and receive a clear "Hello, world!" message.
 
 ### Functional Requirements
 
-- **FR-001**: The system MUST provide a greeting experience that users can trigger directly.
+- **FR-001**: The system MUST let users trigger the state machine directly to request a greeting.
 - **FR-002**: The system MUST return the exact message "Hello, world!" for every valid greeting request.
 - **FR-003**: Users MUST be able to request the greeting repeatedly and receive the same output each time.
-- **FR-004**: The system MUST return a clear, user-friendly error message when a request is invalid.
+- **FR-004**: The system MUST return a clear, user-friendly error message when the state-machine trigger is unavailable or malformed.
 - **FR-005**: The system MUST return a clear, user-friendly error message when a valid request cannot be completed due to a temporary failure.
 - **FR-006**: The greeting feature MUST be available to all intended users without requiring additional setup beyond normal access to the product.
 
@@ -58,5 +65,5 @@ As a user, I request a greeting and receive a clear "Hello, world!" message.
 
 - The greeting is delivered in English for the initial release.
 - Personalization and localization are out of scope for this feature.
-- Users already have access to an existing interaction point where the greeting request can be made.
+- Users can trigger the state machine directly.
 - Existing product access controls determine who can use the feature.
