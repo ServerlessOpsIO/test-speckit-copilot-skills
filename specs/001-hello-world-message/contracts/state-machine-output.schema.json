@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HelloWorldStateMachineOutput",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "const": "SUCCESS"
+        },
+        "message": {
+          "const": "Hello World!"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "status",
+        "message",
+        "timestamp"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "const": "UNAVAILABLE"
+        },
+        "message": {
+          "const": "Greeting is currently unavailable. Please retry."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "status",
+        "message",
+        "timestamp"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

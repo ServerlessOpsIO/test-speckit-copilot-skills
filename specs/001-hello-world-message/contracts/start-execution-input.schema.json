@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HelloWorldStartExecutionInput",
+  "type": "object",
+  "properties": {
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional caller-provided identifier for correlating responses and logs."
+    },
+    "simulateFailure": {
+      "type": "boolean",
+      "default": false,
+      "description": "When true, routes execution to the unavailable-response path."
+    }
+  },
+  "additionalProperties": false
+}
