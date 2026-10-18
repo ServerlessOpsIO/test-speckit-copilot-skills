@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: test-speckit-copilot-skills-spec-001
+  title: "Hello world message"
+  description: "As a user I receive a hello world message"
+  annotations:
+    github.com/project-slug: ServerlessOpsIO/test-speckit-copilot-skills
+    backstage.io/source-location: url:https://github.com/ServerlessOpsIO/test-speckit-copilot-skills/tree/main/specs/001-hello-world-message/
+  tags:
+    - speckit
+  links:
+    - url: https://github.com/ServerlessOpsIO/test-speckit-copilot-skills/blob/main/specs/001-hello-world-message/spec.md
+      title: Specification
+      icon: docs
+    - url: https://github.com/ServerlessOpsIO/test-speckit-copilot-skills/blob/main/specs/001-hello-world-message/plan.md
+      title: Implementation plan
+      icon: docs
+spec:
+  type: doc-spec
+  owner: group:00gjdgxs1ur6lsu
+  system: system:speckittesting
+  dependsOn:
+    - component:default/test-speckit-copilot-skills
