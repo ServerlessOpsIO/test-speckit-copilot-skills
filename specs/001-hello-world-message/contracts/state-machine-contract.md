@@ -18,7 +18,7 @@
 
 ### Rules
 
-- `forceFallback` is optional and defaults to `false`.
+- `forceFallback` is optional and defaults to `false`; when `true`, it simulates a temporary delivery failure on both the initial attempt and the single retry so the fallback can be validated.
 - `requestId` is optional and used only for correlation/traceability.
 - Additional unknown fields should be ignored by workflow logic unless explicitly mapped in implementation.
 
@@ -30,7 +30,7 @@
 {
   "result": {
     "status": "SUCCESS",
-    "message": "Hello World!",
+    "message": "Hello, World!",
     "retryable": false
   }
 }
@@ -51,10 +51,12 @@
 ## CloudWatch Logging Contract
 
 - Step Functions logging is enabled with execution data included.
-- For successful runs, CloudWatch log events must contain output payload data where `result.message` is exactly `"Hello World!"`.
+- For successful runs, the execution output must contain `result.message` exactly `"Hello, World!"`; CloudWatch logs provide additional visibility into execution data.
 - For fallback runs, CloudWatch log events must contain `status` as `FALLBACK` and a retry-guidance message.
+- CloudWatch logging is best-effort; completed Standard workflow execution output is also retrievable with `DescribeExecution`.
 
 ## Error and Fallback Semantics
 
 - Workflow must not return empty output payloads.
-- If success path cannot produce the required greeting message, workflow emits fallback payload instead of blank response.
+- A temporary delivery failure is retried once automatically.
+- If delivery still fails after that retry, workflow emits the fallback payload instead of blank output.

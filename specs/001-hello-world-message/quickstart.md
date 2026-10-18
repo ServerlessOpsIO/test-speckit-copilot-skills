@@ -49,7 +49,7 @@ Expected outcome:
 
 - Execution status is `SUCCEEDED`
 - Output contains `result.status = "SUCCESS"`
-- Output contains exact `result.message = "Hello World!"`
+- Output contains exact `result.message = "Hello, World!"`
 
 ## 4. Confirm CloudWatch log message for success
 
@@ -63,7 +63,8 @@ aws logs filter-log-events \
 
 Expected outcome:
 
-- At least one execution log entry includes output data with `result.message` equal to `"Hello World!"`
+- Execution output provides the message directly; CloudWatch Logs provide additional visibility into execution data.
+- If checking the logs, an execution log entry includes output data with `result.message` equal to `"Hello, World!"`.
 
 ## 5. Run fallback scenario
 
@@ -78,6 +79,7 @@ Expected outcome:
 - Execution status is `SUCCEEDED`
 - Output contains `result.status = "FALLBACK"`
 - Output includes a retry-guidance fallback message
+- Execution history shows one automatic retry before the fallback result.
 
 ## References
 
