@@ -3,7 +3,7 @@ kind: Resource
 metadata:
   name: test-speckit-copilot-skills-spec-001
   title: "Hello world message"
-  description: "As a user I receive a hello world message"
+  description: "001 - hello world message"
   annotations:
     github.com/project-slug: ServerlessOpsIO/test-speckit-copilot-skills
     serverlessops.io/spec-dir: specs/001-hello-world-message
