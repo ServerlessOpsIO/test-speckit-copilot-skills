@@ -7,7 +7,7 @@ metadata:
   annotations:
     github.com/project-slug: ServerlessOpsIO/test-speckit-copilot-skills
     serverlessops.io/spec-dir: specs/001-hello-world-message
-    serverlessops.io/spec-number: 001
+    serverlessops.io/spec-number: "001"
     backstage.io/source-location: url:https://github.com/ServerlessOpsIO/test-speckit-copilot-skills/tree/main/specs/001-hello-world-message/
   tags:
     - speckit
