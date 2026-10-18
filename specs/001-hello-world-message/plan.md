@@ -6,7 +6,7 @@
 
 ## Summary
 
-Deliver a serverless greeting workflow using **AWS Step Functions** (preferred over AWS Lambda) that emits the exact message **"Hello World!"** during successful execution and makes that message visible to users via **CloudWatch Logs**. Include a deterministic fallback path for temporary greeting failures.
+Deliver a serverless greeting workflow using **AWS Step Functions** that returns the exact message **"Hello, World!"** in the execution output and makes execution data available in **CloudWatch Logs**. Retry a temporary delivery failure once automatically, then return a readable fallback if delivery still fails.
 
 ## Technical Context
 
@@ -22,11 +22,11 @@ Deliver a serverless greeting workflow using **AWS Step Functions** (preferred o
 
 **Project Type**: Infrastructure-as-code serverless workflow
 
-**Performance Goals**: Workflow completes and emits the greeting log data within a single short execution (target p95 under 5 seconds)
+**Performance Goals**: Complete a normal execution and expose its output promptly; no numeric latency target is specified.
 
-**Constraints**: Prefer Step Functions over Lambda; success message must be exactly `"Hello World!"`; execution data must be logged to CloudWatch for user visibility
+**Constraints**: Preserve the exact success message `"Hello, World!"`; make the result available in Step Functions execution output or CloudWatch Logs; retry temporary delivery failures once before fallback.
 
-**Scale/Scope**: One state machine and its supporting log configuration/policies for low-volume demo and validation usage
+**Scale/Scope**: One state machine and its supporting log configuration/policies; no user-specific data storage or role-based behavior.
 
 ## Constitution Check
 
@@ -34,11 +34,11 @@ Deliver a serverless greeting workflow using **AWS Step Functions** (preferred o
 
 ### Pre-Research Gate Review
 
-- **I. Serverless-First Architecture**: PASS — solution is Step Functions-first with no Lambda compute path.
+- **I. Serverless-First Architecture**: PASS — use managed Step Functions orchestration; keep any required work stateless and bounded.
 - **II. Least Privilege and Secure Boundaries**: PASS — plan includes scoped IAM and no secret-in-code requirements.
 - **III. Infrastructure as Code**: PASS — all resources and behavior are planned in SAM/CloudFormation artifacts.
 - **IV. Tested Contracts and Changes**: PASS — contract and quickstart validation artifacts are included in this phase.
-- **V. Operational Readiness**: PASS — CloudWatch execution logging is part of the design.
+- **V. Operational Readiness**: PASS — CloudWatch execution logging and a single retry before fallback are part of the design.
 
 **Gate Result**: PASS
 
@@ -48,7 +48,7 @@ Deliver a serverless greeting workflow using **AWS Step Functions** (preferred o
 - **II. Least Privilege and Secure Boundaries**: PASS
 - **III. Infrastructure as Code**: PASS
 - **IV. Tested Contracts and Changes**: PASS
-- **V. Operational Readiness**: PASS
+- **V. Operational Readiness**: PASS — one automatic retry is specified for temporary failures, with fallback after exhaustion.
 
 **Post-Design Gate Result**: PASS
 
