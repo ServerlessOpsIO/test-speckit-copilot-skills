@@ -6,12 +6,15 @@
 
 - **API**: `StartExecution`
 - **Trigger mode**: Manual only (Console, CLI, SDK)
+- **CloudFormation outputs used by clients**:
+  - `HelloWorldMessageStateMachineArn`
+  - `HelloWorldMessageLogGroupName`
 
 ### Request Contract
 
 ```json
 {
-  "stateMachineArn": "arn:aws:states:<region>:<account-id>:stateMachine:HelloWorldMessageStateMachine",
+  "stateMachineArn": "<HelloWorldMessageStateMachineArn output value>",
   "name": "hello-world-<unique-suffix>",
   "input": "{}"
 }
@@ -27,7 +30,7 @@
 
 ```json
 {
-  "executionArn": "arn:aws:states:<region>:<account-id>:execution:HelloWorldMessageStateMachine:hello-world-1234567890",
+  "executionArn": "arn:aws:states:<region>:<account-id>:execution:<stack-name>-hello-world-message:hello-world-1234567890",
   "startDate": "2026-10-18T21:00:00.000Z"
 }
 ```

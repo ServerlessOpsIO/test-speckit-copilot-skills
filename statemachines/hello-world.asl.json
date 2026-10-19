@@ -1,0 +1,135 @@
+{
+  "Comment": "Manually triggered hello world workflow with transient logging retries.",
+  "StartAt": "InitializeRequest",
+  "States": {
+    "InitializeRequest": {
+      "Type": "Pass",
+      "Parameters": {
+        "request": {
+          "input.$": "States.JsonMerge({}, $, false)",
+          "triggerType": "manual"
+        }
+      },
+      "Next": "InitializeContext"
+    },
+    "InitializeContext": {
+      "Type": "Pass",
+      "Parameters": {
+        "request.$": "$.request",
+        "context": {
+          "message": "Hello World!",
+          "attempt": 1,
+          "maxAttempts": 4
+        }
+      },
+      "Next": "WriteGreetingLog"
+    },
+    "WriteGreetingLog": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:cloudwatchlogs:putLogEvents",
+      "Parameters": {
+        "LogGroupName": "${HelloWorldMessageLogGroupName}",
+        "LogStreamName": "${HelloWorldMessageLogStreamName}",
+        "LogEvents": [
+          {
+            "Message.$": "States.Format('{\"timestamp\":\"{}\",\"executionArn\":\"{}\",\"level\":\"INFO\",\"message\":\"{}\"}', $$.State.EnteredTime, $$.Execution.Id, $.context.message)",
+            "Timestamp.$": "$$.State.EnteredTime"
+          }
+        ]
+      },
+      "ResultPath": "$.logWriteResult",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "ResultPath": "$.error",
+          "Next": "HandleLoggingError"
+        }
+      ],
+      "Next": "FinalizeSuccess"
+    },
+    "HandleLoggingError": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "And": [
+            {
+              "Or": [
+                {
+                  "Variable": "$.error.Error",
+                  "StringEquals": "CloudWatchLogs.ServiceUnavailableException"
+                },
+                {
+                  "Variable": "$.error.Error",
+                  "StringEquals": "CloudWatchLogs.ThrottlingException"
+                },
+                {
+                  "Variable": "$.error.Error",
+                  "StringEquals": "CloudWatchLogs.OperationAbortedException"
+                },
+                {
+                  "Variable": "$.error.Error",
+                  "StringEquals": "ServiceUnavailableException"
+                },
+                {
+                  "Variable": "$.error.Error",
+                  "StringEquals": "ThrottlingException"
+                },
+                {
+                  "Variable": "$.error.Error",
+                  "StringEquals": "OperationAbortedException"
+                }
+              ]
+            },
+            {
+              "Variable": "$.context.attempt",
+              "NumericLessThanPath": "$.context.maxAttempts"
+            }
+          ],
+          "Next": "IncrementAttempt"
+        }
+      ],
+      "Default": "FinalizeFailure"
+    },
+    "IncrementAttempt": {
+      "Type": "Pass",
+      "Parameters": {
+        "request.$": "$.request",
+        "context": {
+          "message.$": "$.context.message",
+          "attempt.$": "States.MathAdd($.context.attempt, 1)",
+          "maxAttempts.$": "$.context.maxAttempts"
+        },
+        "error.$": "$.error"
+      },
+      "Next": "RetryDelay"
+    },
+    "RetryDelay": {
+      "Type": "Wait",
+      "Seconds": 1,
+      "Next": "WriteGreetingLog"
+    },
+    "FinalizeSuccess": {
+      "Type": "Pass",
+      "Parameters": {
+        "status": "SUCCEEDED",
+        "message.$": "$.context.message",
+        "attempts.$": "$.context.attempt",
+        "triggerType.$": "$.request.triggerType"
+      },
+      "End": true
+    },
+    "FinalizeFailure": {
+      "Type": "Pass",
+      "Parameters": {
+        "status": "FAILED",
+        "message": "Unable to process your greeting request right now. Please try again later.",
+        "attempts.$": "$.context.attempt",
+        "failureReason.$": "$.error.Cause",
+        "triggerType.$": "$.request.triggerType"
+      },
+      "End": true
+    }
+  }
+}

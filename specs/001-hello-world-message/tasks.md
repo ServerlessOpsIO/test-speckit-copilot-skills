@@ -18,9 +18,9 @@
 
 **Purpose**: Prepare project files and deployment metadata for implementation.
 
-- [ ] T001 Create the Step Functions definition scaffold in `statemachines/hello-world.asl.json` with top-level `StartAt`, `States`, and placeholder success/failure states.
-- [ ] T002 [P] Add feature-specific deployment parameter values in `cfn-parameters.json` for the stack used to deploy this workflow.
-- [ ] T003 [P] Add/confirm deployment tags for this feature in `cfn-tags.json` so stack resources are traceable during rollout.
+- [X] T001 Create the Step Functions definition scaffold in `statemachines/hello-world.asl.json` with top-level `StartAt`, `States`, and placeholder success/failure states.
+- [X] T002 [P] Add feature-specific deployment parameter values in `cfn-parameters.json` for the stack used to deploy this workflow.
+- [X] T003 [P] Add/confirm deployment tags for this feature in `cfn-tags.json` so stack resources are traceable during rollout.
 
 ---
 
@@ -30,10 +30,10 @@
 
 **⚠️ CRITICAL**: Complete this phase before starting user story implementation.
 
-- [ ] T004 Add `HelloWorldMessageLogGroup` resource in `template.yaml` with explicit retention and encryption settings for workflow observability.
-- [ ] T005 Add `HelloWorldMessageStateMachine` resource in `template.yaml` as `AWS::Serverless::StateMachine` with `StateMachineType: STANDARD` and `DefinitionUri: statemachines/hello-world.asl.json`.
-- [ ] T006 Configure least-privilege logging permissions and state machine logging configuration in `template.yaml` so the workflow can write required log events.
-- [ ] T007 Add outputs in `template.yaml` for state machine ARN and log group name used by manual invocation and quickstart validation.
+- [X] T004 Add `HelloWorldMessageLogGroup` resource in `template.yaml` with explicit retention and encryption settings for workflow observability.
+- [X] T005 Add `HelloWorldMessageStateMachine` resource in `template.yaml` as `AWS::Serverless::StateMachine` with `StateMachineType: STANDARD` and `DefinitionUri: statemachines/hello-world.asl.json`.
+- [X] T006 Configure least-privilege logging permissions and state machine logging configuration in `template.yaml` so the workflow can write required log events.
+- [X] T007 Add outputs in `template.yaml` for state machine ARN and log group name used by manual invocation and quickstart validation.
 
 **Checkpoint**: Infrastructure foundation is ready; user story work can begin.
 
@@ -47,13 +47,13 @@
 
 ### Implementation for User Story 1
 
-- [ ] T008 [US1] Implement request/context initialization states in `statemachines/hello-world.asl.json` so `input` constraint is enforced verbatim: "`input` (object, optional): Must default to `{}`; no business fields are required.", and "`triggerType` (string, derived): Always `manual`."
-- [ ] T009 [US1] Implement context constants in `statemachines/hello-world.asl.json` with verbatim constraints: "`message` must exactly equal `Hello World!`.", "`attempt` must be between `1` and `4`, inclusive.", and "`maxAttempts` (number): Constant value `4` (initial + 3 retries)."
-- [ ] T010 [US1] Implement the CloudWatch log-write task path in `statemachines/hello-world.asl.json` to satisfy GreetingLogRecord constraint verbatim: "`message` is case-sensitive and must include the exclamation mark."
-- [ ] T011 [US1] Implement retry loop and attempt progression in `statemachines/hello-world.asl.json` with verbatim retry contract: "Initial attempt + up to 3 retries (maximum 4 total attempts)." and "Retries apply to transient logging failures only."
-- [ ] T012 [US1] Implement terminal success and failure states in `statemachines/hello-world.asl.json` with verbatim result constraints: "On success, `status` must be `SUCCEEDED` and `message` must be `Hello World!`." and "On terminal failure, `status` must be `FAILED` with a clear user-friendly error message."
-- [ ] T013 [P] [US1] Update the external interface details in `specs/001-hello-world-message/contracts/greeting-workflow-contract.md` so request/response examples align with deployed template outputs and logical names.
-- [ ] T014 [P] [US1] Update execution commands in `specs/001-hello-world-message/quickstart.md` to reference the actual output names from `template.yaml` for manual trigger and CloudWatch log checks.
+- [X] T008 [US1] Implement request/context initialization states in `statemachines/hello-world.asl.json` so `input` constraint is enforced verbatim: "`input` (object, optional): Must default to `{}`; no business fields are required.", and "`triggerType` (string, derived): Always `manual`."
+- [X] T009 [US1] Implement context constants in `statemachines/hello-world.asl.json` with verbatim constraints: "`message` must exactly equal `Hello World!`.", "`attempt` must be between `1` and `4`, inclusive.", and "`maxAttempts` (number): Constant value `4` (initial + 3 retries)."
+- [X] T010 [US1] Implement the CloudWatch log-write task path in `statemachines/hello-world.asl.json` to satisfy GreetingLogRecord constraint verbatim: "`message` is case-sensitive and must include the exclamation mark."
+- [X] T011 [US1] Implement retry loop and attempt progression in `statemachines/hello-world.asl.json` with verbatim retry contract: "Initial attempt + up to 3 retries (maximum 4 total attempts)." and "Retries apply to transient logging failures only."
+- [X] T012 [US1] Implement terminal success and failure states in `statemachines/hello-world.asl.json` with verbatim result constraints: "On success, `status` must be `SUCCEEDED` and `message` must be `Hello World!`." and "On terminal failure, `status` must be `FAILED` with a clear user-friendly error message."
+- [X] T013 [P] [US1] Update the external interface details in `specs/001-hello-world-message/contracts/greeting-workflow-contract.md` so request/response examples align with deployed template outputs and logical names.
+- [X] T014 [P] [US1] Update execution commands in `specs/001-hello-world-message/quickstart.md` to reference the actual output names from `template.yaml` for manual trigger and CloudWatch log checks.
 
 **Checkpoint**: User Story 1 is independently functional and testable.
 
@@ -63,9 +63,9 @@
 
 **Purpose**: Align cross-document consistency and finalize operational guidance.
 
-- [ ] T015 [P] Normalize greeting text consistency across `specs/001-hello-world-message/spec.md` and `specs/001-hello-world-message/contracts/greeting-workflow-contract.md` to one canonical exact string.
-- [ ] T016 Update `specs/001-hello-world-message/quickstart.md` with explicit retry/failure verification steps tied to execution history and CloudWatch evidence.
-- [ ] T017 [P] Add feature usage notes in `README.md` for deploy, manual start, and log validation flow.
+- [X] T015 [P] Normalize greeting text consistency across `specs/001-hello-world-message/spec.md` and `specs/001-hello-world-message/contracts/greeting-workflow-contract.md` to one canonical exact string.
+- [X] T016 Update `specs/001-hello-world-message/quickstart.md` with explicit retry/failure verification steps tied to execution history and CloudWatch evidence.
+- [X] T017 [P] Add feature usage notes in `README.md` for deploy, manual start, and log validation flow.
 
 ---
 
