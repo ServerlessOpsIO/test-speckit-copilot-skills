@@ -4,7 +4,7 @@
 
 **Prerequisites**: plan.md (required), spec.md (required), research.md, data-model.md, contracts/, quickstart.md
 
-**Tests**: No standalone automated test tasks are generated; validation is performed through the quickstart execution scenarios and SAM validation/build commands defined below.
+**Tests**: No automated Step Functions behavior tests are generated under the approved feature-scoped Principle IV waiver in `plan.md`. Required validation remains `sam validate --lint` and the manual quickstart execution scenarios, including success, CloudWatch message, and retry/failure checks.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing.
 

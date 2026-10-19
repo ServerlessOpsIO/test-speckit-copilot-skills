@@ -16,7 +16,7 @@ Deliver a manually triggered AWS Step Functions workflow (preferred over Lambda 
 
 **Storage**: N/A
 
-**Testing**: `sam validate --lint`, manual Step Functions execution validation via AWS CLI/console and CloudWatch Logs assertions
+**Testing**: `sam validate --lint` and manual Step Functions execution validation via AWS CLI/console and CloudWatch Logs assertions. Automated Step Functions behavior tests are waived as documented below.
 
 **Target Platform**: AWS managed serverless services (Step Functions + CloudWatch Logs)
 
@@ -41,10 +41,19 @@ Deliver a manually triggered AWS Step Functions workflow (preferred over Lambda 
 | I. Serverless-First Architecture | PASS | Uses managed Step Functions and CloudWatch; avoids always-on/self-managed compute. |
 | II. Least Privilege and Secure Boundaries | PASS | Design limits IAM to required Step Functions and logging actions; no secrets in config/log output. |
 | III. Infrastructure as Code | PASS | Resources will be declared in SAM/CloudFormation templates only. |
-| IV. Tested Contracts and Changes | PASS | Plan includes explicit contracts and a runnable validation quickstart. |
+| IV. Tested Contracts and Changes | WAIVED | Automated Step Functions behavior tests are covered by the approved, feature-scoped waiver below; SAM validation and manual execution checks remain required. |
 | V. Operational Readiness | PASS | CloudWatch logging, retry behavior, and explicit failure handling are part of the workflow design. |
 
-**Post-Design Re-check**: PASS. Phase 1 artifacts keep all gates satisfied with no waivers required.
+**Post-Design Re-check**: PASS with the Principle IV waiver below; all other gates remain satisfied.
+
+### Principle IV Waiver
+
+- **Unmet requirement**: Automated tests for Step Functions behavior and its contract.
+- **Scope**: This feature only; no automated Step Functions behavior tests are required.
+- **Rationale**: The approver confirms there is no known local testing pattern for AWS Step Functions.
+- **Risk**: Workflow or integration defects may not be detected until manual execution in AWS.
+- **Corrective action and expiry**: Before merge, run `sam validate --lint` and manually verify successful execution, the exact CloudWatch log message, and the documented retry/failure behavior. The waiver expires before production deployment or when a supported local Step Functions testing pattern becomes available, whichever comes first.
+- **Approver**: @tmclaugh (approval recorded in the PR comment on 2026-10-19).
 
 ## Project Structure
 
