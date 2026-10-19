@@ -1,5 +1,7 @@
 {
   "org:domain": "platform",
   "org:system": "backstage",
-  "org:component": $env.GITHUB_REPOSITORY_NAME_PART_SLUG_CS
+  "org:component": "hello-world-message-workflow",
+  "feature": "hello-world-message",
+  "delivery-mode": "manual-stepfunctions"
 }

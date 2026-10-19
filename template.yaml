@@ -23,4 +23,69 @@ Parameters:
     Type: String
     Description: "Name of GitHub Branch"
 
-Resources: {}
+Resources:
+  HelloWorldMessageLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub '/aws/vendedlogs/states/${AWS::StackName}-hello-world-message'
+      RetentionInDays: 14
+      KmsKeyId: !Sub 'arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/logs'
+
+  HelloWorldMessageLogStream:
+    Type: AWS::Logs::LogStream
+    Properties:
+      LogGroupName: !Ref HelloWorldMessageLogGroup
+      LogStreamName: greeting-workflow
+
+  HelloWorldMessageStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Name: !Sub '${AWS::StackName}-hello-world-message'
+      Type: STANDARD
+      DefinitionUri: statemachines/hello-world.asl.json
+      DefinitionSubstitutions:
+        HelloWorldMessageLogGroupName: !Ref HelloWorldMessageLogGroup
+        HelloWorldMessageLogStreamName: greeting-workflow
+      Logging:
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn: !GetAtt HelloWorldMessageLogGroup.Arn
+        IncludeExecutionData: true
+        Level: ALL
+      Policies:
+        - Statement:
+            - Sid: StepFunctionsExecutionLogging
+              Effect: Allow
+              Action:
+                - logs:CreateLogDelivery
+                - logs:GetLogDelivery
+                - logs:UpdateLogDelivery
+                - logs:DeleteLogDelivery
+                - logs:ListLogDeliveries
+                - logs:PutResourcePolicy
+                - logs:DescribeResourcePolicies
+                - logs:DescribeLogGroups
+              Resource: '*'
+            - Sid: WorkflowLogWrites
+              Effect: Allow
+              Action:
+                - logs:PutLogEvents
+                - logs:DescribeLogStreams
+              Resource:
+                - !Sub '${HelloWorldMessageLogGroup.Arn}:log-stream:greeting-workflow'
+      Tags:
+        Domain: !Ref Domain
+        System: !Ref System
+        Component: !Ref Component
+        CodeBranch: !Ref CodeBranch
+
+Outputs:
+  HelloWorldMessageStateMachineArn:
+    Description: ARN of the hello world workflow state machine.
+    Value: !Ref HelloWorldMessageStateMachine
+
+  HelloWorldMessageLogGroupName:
+    Description: CloudWatch Logs group used by the hello world workflow.
+    Value: !Ref HelloWorldMessageLogGroup

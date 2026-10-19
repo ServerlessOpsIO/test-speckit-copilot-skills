@@ -71,6 +71,8 @@ venv.bak/
 # Mac Cruft
 .DS_Store
 Thumbs.db
+*.tmp
+*.swp
 
 # IDE
 .vscode

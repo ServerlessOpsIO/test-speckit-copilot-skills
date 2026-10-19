@@ -1,6 +1,6 @@
 {
-    "Domain": "sandbox",
-    "System": "speckittesting",
-    "Component": $env.GITHUB_REPOSITORY_NAME_PART_SLUG_CS,
-    "CodeBranch": $env.GITHUB_REF_SLUG_CS
+  "Domain": "sandbox",
+  "System": "speckittesting",
+  "Component": "hello-world-message-workflow",
+  "CodeBranch": "001-hello-world-message"
 }
